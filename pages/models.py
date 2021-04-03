@@ -28,11 +28,17 @@ class Plan(models.Model):
     description = models.TextField()
     created = models.DateField(auto_now_add=True)
 
+    def __str__(self):
+        return f'{self.name} {self.description}'
+
 
 class DayName(models.Model):
 
     name = models.CharField(max_length=16)
     order = models.CharField(choices=WeekDay, max_length=15)
+
+    def __str__(self):
+        return f'{self.name}'
 
 
 class RecipePlan(models.Model):
@@ -41,3 +47,6 @@ class RecipePlan(models.Model):
     plan = models.ForeignKey(Plan, on_delete=models.CASCADE)
     order = models.IntegerField()
     day_name = models.ForeignKey(DayName, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.meal_name} {self.day_name} {self.plan}'

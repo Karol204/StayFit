@@ -3,7 +3,7 @@ import random
 from django.shortcuts import render
 from django.views import View
 
-from pages.models import Recipe
+from pages.models import Recipe, Plan, RecipePlan, DayName
 
 
 class LandingView(View):
@@ -26,4 +26,41 @@ class LandingView(View):
 class Dashboard(View):
 
     def get(self, request):
-        return render(request, 'dashboard.html')
+
+        plans = Plan.objects.all()
+        recipes = Recipe.objects.all()
+        number_of_recipes = recipes.count()
+        numer_of_plans = plans.count()
+
+        plans_list = list(plans)
+        plans_list.sort(key=lambda created:created)
+        last_added_plan = plans_list[0]
+        recipe_in_plan = RecipePlan.objects.filter(plan=last_added_plan)
+        recipe_in_plan = recipe_in_plan.order_by('day_name')
+
+
+
+        ctx = {
+            'numer_of_plans': numer_of_plans,
+            'number_of_recipes': number_of_recipes,
+            'last_added_plan': last_added_plan,
+            'recipe_in_plan': recipe_in_plan
+        }
+        return render(request, 'dashboard.html', ctx)
+
+
+class RecipeList(View):
+
+    def get(self, request):
+        all_recipes = Recipe.objects.all().order_by('votes')
+        ctx = {
+            'all_recipes': all_recipes,
+        }
+        return render(request, 'app-recipes.html', ctx)
+
+
+class RecipeAdd(View):
+
+    def get(self, request):
+        return render(request, 'app-add-recipe.html')
+
