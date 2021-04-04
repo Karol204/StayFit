@@ -21,6 +21,7 @@ class Recipe(models.Model):
     created = models.DateField(auto_now_add=True)
     preparation_time = models.IntegerField()
     votes = models.IntegerField(default=0)
+    preparation = models.CharField(max_length=2000)
 
 
 class Plan(models.Model):

@@ -1,6 +1,7 @@
 import random
 
-from django.shortcuts import render
+from django.http import JsonResponse
+from django.shortcuts import render, redirect
 from django.views import View
 
 from pages.models import Recipe, Plan, RecipePlan, DayName
@@ -63,4 +64,27 @@ class RecipeAdd(View):
 
     def get(self, request):
         return render(request, 'app-add-recipe.html')
+
+    def post(self, request):
+        recipe_name = request.POST.get('recipeName')
+        recipe_description = request.POST.get('recipeDescription')
+        prep_time = request.POST.get('prepTime')
+        preparation = request.POST.get('preparation')
+        ingredients = request.POST.get('ingredients')
+        try:
+            new_recipe = Recipe()
+            new_recipe.name = recipe_name
+            new_recipe.description = recipe_description
+            new_recipe.preparation_time = prep_time
+            new_recipe.preparation = preparation
+            new_recipe.ingredients = ingredients
+            new_recipe.save()
+            return redirect('/recipe/list')
+        except:
+            ctx = {
+                'error': True,
+                'errorMessage': 'Cos poszlo nie tak'
+            }
+            return JsonResponse(ctx)
+
 
