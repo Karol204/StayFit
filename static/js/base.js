@@ -34,6 +34,8 @@ function addRecipe(e) {
             }
         }).done(function () {
             window.location.replace("/recipe/list");
+        }).fail(function (response){
+            result.innerText = response['errorMessage']
         })
     }
 }

@@ -88,3 +88,12 @@ class RecipeAdd(View):
             return JsonResponse(ctx)
 
 
+class PlanList(View):
+
+    def get(self, request):
+        plans = Plan.objects.all().order_by('name')
+        print(plans)
+        ctx = {
+            'plans': plans,
+        }
+        return render(request, 'app-schedules.html', ctx)

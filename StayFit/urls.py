@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 
-from pages.views import LandingView, Dashboard, RecipeList, RecipeAdd
+from pages.views import LandingView, Dashboard, RecipeList, PlanList,  RecipeAdd
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -11,6 +11,7 @@ urlpatterns = [
     path('recipe/list/', RecipeList.as_view()),
     path('recipe/add/', RecipeAdd.as_view()),
     # path('recipe/modify/<int:id>', ),
+    path('plan/list/', PlanList.as_view()),
     # path('plan/add/', ),
     # path('plan/add-recipe/', )
 ]

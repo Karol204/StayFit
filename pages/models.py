@@ -28,6 +28,7 @@ class Plan(models.Model):
     name = models.CharField(max_length=250)
     description = models.TextField()
     created = models.DateField(auto_now_add=True)
+    recipes = models.ManyToManyField(Recipe, through='RecipePlan')
 
     def __str__(self):
         return f'{self.name} {self.description}'
