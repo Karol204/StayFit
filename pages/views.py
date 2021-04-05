@@ -97,3 +97,33 @@ class PlanList(View):
             'plans': plans,
         }
         return render(request, 'app-schedules.html', ctx)
+
+
+class PlanAdd(View):
+
+    def get(self, request):
+        ctx = {
+
+        }
+        return render(request, 'app-add-schedules.html', ctx)
+
+    def post(self, request):
+        plan_name = request.POST.get('planName')
+        plan_description = request.POST.get('planDescription')
+
+        try:
+            new_plan = Plan()
+            new_plan.name = plan_name
+            new_plan.description = plan_description
+            new_plan.save()
+            ctx = {
+                'error': True,
+                'errorMessage': 'Plan dodany pomyslnie'
+            }
+            return JsonResponse(ctx)
+        except:
+            ctx = {
+                'error': True,
+                'errorMessage': 'Cos poszlo nie tak'
+            }
+            return JsonResponse(ctx)

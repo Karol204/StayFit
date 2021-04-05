@@ -1,12 +1,12 @@
 function addRecipe(e) {
     // e.preventDefault()
-    result = document.getElementById('result')
+    let result = document.getElementById('result')
 
-    recipeName = document.getElementById('recipeName').value
-    recipeDescription = document.getElementById('recipeDescription').value
-    prepTime = document.getElementById('prepTime').value
-    preparation = document.getElementById('preparation').value
-    ingredients = document.getElementById('ingredients').value
+    let recipeName = document.getElementById('recipeName').value
+    let recipeDescription = document.getElementById('recipeDescription').value
+    let prepTime = document.getElementById('prepTime').value
+    let preparation = document.getElementById('preparation').value
+    let ingredients = document.getElementById('ingredients').value
 
     if (recipeName == '') {
         result.innerText = 'Uzupelnij nazwe przepisu'
@@ -20,11 +20,9 @@ function addRecipe(e) {
         result.innerText = 'Uzupelnij Skladniki'
     } else {
         $.ajax({
-
             url: '/recipe/add/',
             type: 'POST',
             data: {
-                // headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                 recipeName: recipeName,
                 recipeDescription: recipeDescription,
                 prepTime: prepTime,
@@ -35,6 +33,33 @@ function addRecipe(e) {
         }).done(function () {
             window.location.replace("/recipe/list");
         }).fail(function (response){
+            result.innerText = response['errorMessage']
+        })
+    }
+}
+
+function addPlan() {
+    let planName = document.getElementById('planName').value
+    let planDescription = document.getElementById('planDescription').value
+
+    let result = document.querySelector('.result')
+    if (planName == ''){
+        result.innerText = 'Uzupelnij Nazwe planu'
+    } else if (planDescription == ''){
+        result.innerText = 'Uzupelnij Opis planu'
+    } else{
+        $.ajax({
+            url: '/plan/add/',
+            type: 'POST',
+            data: {
+                planName: planName,
+                planDescription: planDescription,
+                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+            }
+        }).done(function (response) {
+            result.innerText = response['errorMessage']
+        }).fail(function (response){
+            console.log('gsdgdfd')
             result.innerText = response['errorMessage']
         })
     }
