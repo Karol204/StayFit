@@ -88,6 +88,18 @@ class RecipeAdd(View):
             return JsonResponse(ctx)
 
 
+class RecipeDetails(View):
+
+    def get(self, request, id):
+        recipe = Recipe.objects.get(pk=id)
+        recipe_ing = recipe.ingredients
+        ingredients = recipe_ing.split(', ')
+        ctx = {
+            'recipe': recipe,
+            'ingredients': ingredients,
+        }
+        return render(request, 'app-recipe-details.html', ctx)
+
 class PlanList(View):
 
     def get(self, request):
@@ -127,3 +139,14 @@ class PlanAdd(View):
                 'errorMessage': 'Cos poszlo nie tak'
             }
             return JsonResponse(ctx)
+
+class PlanDetails(View):
+
+    def get(self, request, id):
+        plan = Plan.objects.get(pk=id)
+        all_recipe = RecipePlan.objects.filter(plan=plan)
+        ctx = {
+            'plan': plan,
+            'all_recipe': all_recipe
+        }
+        return render(request, 'app-details-schedules.html', ctx)
