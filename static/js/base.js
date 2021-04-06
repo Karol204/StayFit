@@ -102,17 +102,20 @@ function addRecipeToPlan() {
             result.innerText = response['errorMessage']
         })
     }
+}
 
+function likeRecipe() {
 
-
-
-
-
-
-
-
-
-
-
+    let recipeId = document.getElementById('likeBtn').dataset.id
+    $.ajax({
+         url: '/plan/like/',
+            type: 'POST',
+            data: {
+                recipeId:recipeId,
+                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+            }
+    }).done(function (response){
+    //    dodac zmiane przycisku na nie lubie
+    })
 
 }

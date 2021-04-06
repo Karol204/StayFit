@@ -35,7 +35,7 @@ class Dashboard(View):
         numer_of_plans = plans.count()
 
         plans_list = list(plans)
-        plans_list.sort(key=lambda created:created)
+        # plans_list.sort(key=lambda created: created)
         last_added_plan = plans_list[0]
         recipe_in_plan = RecipePlan.objects.filter(plan=last_added_plan)
         recipe_in_plan = recipe_in_plan.order_by('day_name')
@@ -200,3 +200,17 @@ class AddRecipeToPlan(View):
                 'errorMessage': 'Cos poszlo nie tak, sprobuj ponownie pozniej'
             }
             return JsonResponse(ctx)
+
+
+def recipe_like(request):
+    recipe_id = request.POST.get('recipeId')
+    recipe = Recipe.objects.get(pk=recipe_id)
+    likes = int(recipe.votes)
+    likes += 1
+    recipe.votes = likes
+    recipe.save()
+    ctx = {
+        'error': True,
+        'errorMessage': 'Przepis dodano do planu'
+    }
+    return JsonResponse(ctx)
