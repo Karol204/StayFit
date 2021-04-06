@@ -23,6 +23,8 @@ class Recipe(models.Model):
     votes = models.IntegerField(default=0)
     preparation = models.CharField(max_length=2000)
 
+    def __str__(self):
+        return f'{self.name}'
 
 class Plan(models.Model):
     name = models.CharField(max_length=250)
@@ -31,7 +33,7 @@ class Plan(models.Model):
     recipes = models.ManyToManyField(Recipe, through='RecipePlan')
 
     def __str__(self):
-        return f'{self.name} {self.description}'
+        return f'{self.name}'
 
 
 class DayName(models.Model):

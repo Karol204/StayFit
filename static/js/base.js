@@ -64,3 +64,55 @@ function addPlan() {
         })
     }
 }
+
+function addRecipeToPlan() {
+    let result = document.querySelector('.result')
+
+
+    let chosenPlan = document.getElementById('id_plan').value
+    let chosenMeal = document.getElementById('id_meal_name').value
+    let mealNumber = document.getElementById('id_order').value
+    let recipe = document.getElementById('id_recipe').value
+    let dayName = document.getElementById('id_day_name').value
+    if (chosenPlan == ''){
+        result.innerText = 'Wybierz plan do ktorego chcesz dodac przepis'
+    } else if (chosenMeal == ''){
+        result.innerText = 'Wybierz posilek'
+    } else if (mealNumber == ''){
+        result.innerText = 'Wybierz numer posilku w dniu'
+    } else if (recipe == ''){
+        result.innerText = 'Wybierz przepis ktory chcesz dodac jako posilek'
+    } else if (dayName == ''){
+        result.innerText = 'Wybierz dzien do ktorego chcesz przypisac posilek'
+    } else {
+        $.ajax({
+            url: '/plan/add-recipe/',
+            type: 'POST',
+            data: {
+                chosenPlan: chosenPlan,
+                chosenMeal: chosenMeal,
+                mealNumber: mealNumber,
+                recipe: recipe,
+                dayName:dayName,
+                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+            }
+        }).done(function (response) {
+            result.innerText = response['errorMessage']
+        }).fail(function (response){
+            result.innerText = response['errorMessage']
+        })
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

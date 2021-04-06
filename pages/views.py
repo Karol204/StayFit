@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 
+from pages.forms import PlanRecipeForm
 from pages.models import Recipe, Plan, RecipePlan, DayName
 
 
@@ -150,3 +151,52 @@ class PlanDetails(View):
             'all_recipe': all_recipe
         }
         return render(request, 'app-details-schedules.html', ctx)
+
+
+class AddRecipeToPlan(View):
+
+    def get(self, request):
+        form = PlanRecipeForm()
+        ctx ={
+            'form':form,
+        }
+        return render(request, 'app-schedules-meal-recipe.html', ctx)
+
+    def post(self, request):
+        chosen_plan_id = request.POST.get('chosenPlan')
+        chosen_meal = request.POST.get('chosenMeal')
+        meal_order = request.POST.get('mealNumber')
+        recipe_id = request.POST.get('recipe')
+        day_name_id = request.POST.get('dayName')
+
+        chosen_plan = Plan.objects.get(pk=chosen_plan_id)
+        recipe = Recipe.objects.get(pk=recipe_id)
+        day_name = DayName.objects.get(pk=day_name_id)
+
+
+
+        print(chosen_plan)
+        print(chosen_meal)
+        print(meal_order)
+        print(recipe)
+        print(day_name)
+
+        try:
+            new_recipe_in_plan = RecipePlan()
+            new_recipe_in_plan.meal_name = chosen_meal
+            new_recipe_in_plan.plan = chosen_plan
+            new_recipe_in_plan.order = meal_order
+            new_recipe_in_plan.day_name = day_name
+            new_recipe_in_plan.recipe = recipe
+            new_recipe_in_plan.save()
+            ctx = {
+                'error': True,
+                'errorMessage': 'Przepis dodano do planu'
+            }
+            return JsonResponse(ctx)
+        except:
+            ctx = {
+                'error': True,
+                'errorMessage': 'Cos poszlo nie tak, sprobuj ponownie pozniej'
+            }
+            return JsonResponse(ctx)
