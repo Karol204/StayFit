@@ -1,3 +1,6 @@
+    let likeBtnContainer = document.getElementById('likeBtnContainer')
+
+
 function addRecipe(e) {
     // e.preventDefault()
     let result = document.getElementById('result')
@@ -7,6 +10,8 @@ function addRecipe(e) {
     let prepTime = document.getElementById('prepTime').value
     let preparation = document.getElementById('preparation').value
     let ingredients = document.getElementById('ingredients').value
+
+
 
     if (recipeName == '') {
         result.innerText = 'Uzupelnij nazwe przepisu'
@@ -105,8 +110,10 @@ function addRecipeToPlan() {
 }
 
 function likeRecipe() {
-
-    let recipeId = document.getElementById('likeBtn').dataset.id
+    let url = window.location.href
+    let arr = url.split('/')
+    let id = arr[arr.length - 1]
+    let recipeId = parseInt(id)
     $.ajax({
          url: '/plan/like/',
             type: 'POST',
@@ -115,7 +122,41 @@ function likeRecipe() {
                 csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
             }
     }).done(function (response){
-    //    dodac zmiane przycisku na nie lubie
+        localStorage.setItem('liked' + recipeId, 'liked')
+        checkBtn(recipeId)
     })
-
 }
+
+function dislikeRecipe() {
+    let url = window.location.href
+    let arr = url.split('/')
+    let id = arr[arr.length - 1]
+    let recipeId = parseInt(id)
+    $.ajax({
+         url: '/plan/dislike/',
+            type: 'POST',
+            data: {
+                recipeId:recipeId,
+                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+            }
+    }).done(function (response){
+        localStorage.clear()
+        checkBtn()
+    })
+}
+
+
+function checkBtn() {
+    let url = window.location.href
+    let arr = url.split('/')
+    let id = arr[arr.length - 1]
+    let recipeId = parseInt(id)
+    let storage = localStorage.getItem('liked' + recipeId)
+    console.log(storage)
+    if (storage == 'liked'){
+        likeBtnContainer.innerHTML
+            = '<button className="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4" id="dislikeBtn" onClick="dislikeRecipe()" data-id="{{ recipe.id }}">Nie lub</button>'
+    }
+}
+
+checkBtn()

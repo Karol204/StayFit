@@ -214,3 +214,16 @@ def recipe_like(request):
         'errorMessage': 'Przepis dodano do planu'
     }
     return JsonResponse(ctx)
+
+def recipe_dislike(request):
+    recipe_id = request.POST.get('recipeId')
+    recipe = Recipe.objects.get(pk=recipe_id)
+    likes = int(recipe.votes)
+    likes -= 1
+    recipe.votes = likes
+    recipe.save()
+    ctx = {
+        'error': True,
+        'errorMessage': 'Przepis dodano do planu'
+    }
+    return JsonResponse(ctx)
