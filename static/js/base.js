@@ -156,6 +156,8 @@ function checkBtn() {
     if (storage == 'liked'){
         likeBtnContainer.innerHTML
             = '<button className="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4" id="dislikeBtn" onClick="dislikeRecipe()" data-id="{{ recipe.id }}">Nie lub</button>'
+    } else {
+        likeBtnContainer.innerHTML = '<button class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4" id="likeBtn" onclick="likeRecipe()" data-id="2">Polub</button>'
     }
 }
 

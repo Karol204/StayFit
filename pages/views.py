@@ -104,7 +104,7 @@ class RecipeDetails(View):
 class PlanList(View):
 
     def get(self, request):
-        plans = Plan.objects.all().order_by('name')
+        plans = Plan.objects.all().order_by('id')
         print(plans)
         ctx = {
             'plans': plans,
@@ -227,3 +227,13 @@ def recipe_dislike(request):
         'errorMessage': 'Przepis dodano do planu'
     }
     return JsonResponse(ctx)
+
+def recipe_delete(request, id):
+    recipe = Recipe.objects.get(pk=id)
+    recipe.delete()
+    return redirect('/recipe/list')
+
+def plan_delete(request, id):
+    plan = Plan.objects.get(pk=id)
+    plan.delete()
+    return redirect('/plan/list')
