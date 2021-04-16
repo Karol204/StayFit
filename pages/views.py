@@ -146,9 +146,19 @@ class PlanDetails(View):
     def get(self, request, id):
         plan = Plan.objects.get(pk=id)
         all_recipe = RecipePlan.objects.filter(plan=plan)
+        monday = RecipePlan.objects.filter(plan=plan, day_name=1)
+        tuesday = RecipePlan.objects.filter(plan=plan, day_name=2)
+        wednsday = RecipePlan.objects.filter(plan=plan, day_name=3)
+        thursday = RecipePlan.objects.filter(plan=plan, day_name=4)
+        friday = RecipePlan.objects.filter(plan=plan, day_name=5)
+        saturday = RecipePlan.objects.filter(plan=plan, day_name=6)
+        sunday = RecipePlan.objects.filter(plan=plan, day_name=7)
+        days = [['monday', monday], ['tuesday', tuesday], ['wednsday', wednsday], ['thursday', thursday], ['friday', friday],
+                ['saturday', saturday], ['sunday', sunday]]
         ctx = {
             'plan': plan,
-            'all_recipe': all_recipe
+            'all_recipe': all_recipe,
+            'days': days
         }
         return render(request, 'app-details-schedules.html', ctx)
 
