@@ -40,13 +40,23 @@ class Dashboard(View):
         recipe_in_plan = RecipePlan.objects.filter(plan=last_added_plan)
         recipe_in_plan = recipe_in_plan.order_by('day_name')
 
-
+        monday = RecipePlan.objects.filter(plan=last_added_plan, day_name=1)
+        tuesday = RecipePlan.objects.filter(plan=last_added_plan, day_name=2)
+        wednsday = RecipePlan.objects.filter(plan=last_added_plan, day_name=3)
+        thursday = RecipePlan.objects.filter(plan=last_added_plan, day_name=4)
+        friday = RecipePlan.objects.filter(plan=last_added_plan, day_name=5)
+        saturday = RecipePlan.objects.filter(plan=last_added_plan, day_name=6)
+        sunday = RecipePlan.objects.filter(plan=last_added_plan, day_name=7)
+        days = [['monday', monday], ['tuesday', tuesday], ['wednsday', wednsday], ['thursday', thursday],
+                ['friday', friday],
+                ['saturday', saturday], ['sunday', sunday]]
 
         ctx = {
             'numer_of_plans': numer_of_plans,
             'number_of_recipes': number_of_recipes,
             'last_added_plan': last_added_plan,
-            'recipe_in_plan': recipe_in_plan
+            'recipe_in_plan': recipe_in_plan,
+            'days': days
         }
         return render(request, 'dashboard.html', ctx)
 
