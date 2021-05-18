@@ -155,10 +155,36 @@ function checkBtn() {
     console.log(storage)
     if (storage == 'liked'){
         likeBtnContainer.innerHTML
-            = '<button className="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4" id="dislikeBtn" onClick="dislikeRecipe()" data-id="{{ recipe.id }}">Nie lub</button>'
+            = '<button class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4" id="dislikeBtn" onClick="dislikeRecipe()" data-id="{{ recipe.id }}">Nie lub</button>'
     } else {
         likeBtnContainer.innerHTML = '<button class="btn btn-color rounded-0 pt-0 pb-0 pr-4 pl-4" id="likeBtn" onclick="likeRecipe()" data-id="2">Polub</button>'
     }
 }
 
-checkBtn()
+console.log('dziala')
+function updateRecipe() {
+    let recipe_name = document.getElementById('edit_recipe_name').value
+    let recipe_description = document.getElementById('edit_recipe_desc').value
+    let recipe_prep_time = document.getElementById('edit_recipe_prep_time').value
+    let edit_recipe_prep = document.getElementById('edit_recipe_prep').value
+    let edit_recipe_ingredients = document.getElementById('edit_recipe_ingredients').value
+    let result = document.getElementById('edit_result')
+
+    let recipe_id = document.getElementById('edit_recipe_name').dataset.id
+     $.ajax({
+         url: `/edit/recipe/${recipe_id}`,
+            type: 'POST',
+            data: {
+                recipe_name:recipe_name,
+                recipe_description:recipe_description,
+                recipe_prep_time:recipe_prep_time,
+                edit_recipe_prep:edit_recipe_prep,
+                edit_recipe_ingredients:edit_recipe_ingredients,
+                csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value
+            }
+    }).done(function () {
+            window.location.replace(`/recipe/${recipe_id}`);
+        }).fail(function (response){
+            result.innerText = response['errorMessage']
+        })
+}

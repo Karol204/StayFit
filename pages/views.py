@@ -111,6 +111,40 @@ class RecipeDetails(View):
         }
         return render(request, 'app-recipe-details.html', ctx)
 
+class RecipeEdit(View):
+
+    def get(self, request, id):
+        recipe = Recipe.objects.get(pk=id)
+        ctx = {
+            'recipe': recipe,
+        }
+        return render(request, 'app-edit-recipe.html', ctx)
+
+    def post(self, request, id):
+        recipe = Recipe.objects.get(pk=id)
+        recipe_name = request.POST.get('recipe_name')
+        recipe_description = request.POST.get('recipe_description')
+        recipe_prep_time = request.POST.get('recipe_prep_time')
+        edit_recipe_prep = request.POST.get('edit_recipe_prep')
+        edit_recipe_ingredients = request.POST.get('edit_recipe_ingredients')
+        try:
+            edited_recipe = recipe
+            edited_recipe.name = recipe_name
+            edited_recipe.description = recipe_description
+            edited_recipe.preparation_time = recipe_prep_time
+            edited_recipe.preparation = edit_recipe_prep
+            edited_recipe.ingredients = edit_recipe_ingredients
+            edited_recipe.save()
+            return redirect(f'/recipe/{id}')
+        except:
+            ctx = {
+                'error': True,
+                'errorMessage': 'Cos poszlo nie tak'
+            }
+            return JsonResponse(ctx)
+
+
+
 class PlanList(View):
 
     def get(self, request):
@@ -192,15 +226,6 @@ class AddRecipeToPlan(View):
         chosen_plan = Plan.objects.get(pk=chosen_plan_id)
         recipe = Recipe.objects.get(pk=recipe_id)
         day_name = DayName.objects.get(pk=day_name_id)
-
-
-
-        print(chosen_plan)
-        print(chosen_meal)
-        print(meal_order)
-        print(recipe)
-        print(day_name)
-
         try:
             new_recipe_in_plan = RecipePlan()
             new_recipe_in_plan.meal_name = chosen_meal
