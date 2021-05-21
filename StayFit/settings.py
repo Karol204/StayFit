@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import dj_database_url
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -79,16 +81,16 @@ WSGI_APPLICATION = 'StayFit.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'StayFit',
-        'USER': 'postgres',
-        'PASSWORD': 'coderslab',
-        'HOST': 'localhost',
-    }
-}
-
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'StayFit',
+#         'USER': 'postgres',
+#         'PASSWORD': 'coderslab',
+#         'HOST': 'localhost',
+#     }
+# }
+DATABASES = {'default': dj_database_url.config()}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
