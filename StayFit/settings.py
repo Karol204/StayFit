@@ -23,9 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '-c-g9t-!ktdp&&c19q$isgb$vajz)bo4-^r)t5tg1vt_26wr+b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['eat-green.herokuapp.com', '127.0.0.1']
+
 
 
 # Application definition

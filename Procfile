@@ -1,0 +1,1 @@
+web: gunicorn StayFit.wsgi --log-file -
